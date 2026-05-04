@@ -1,10 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
   // Disable Turbopack and use Webpack (required for custom webpack config)
   // turbopack: {}, // Uncomment this line if you want to use Turbopack instead
-  
+
   // Bundle optimization and tree-shaking configuration
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Tree-shaking for Stellar SDK

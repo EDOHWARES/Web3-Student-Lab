@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { Alert, AlertDescription } from "@/components/ui/Alert";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Switch } from "@/components/ui/Switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
-import { useWallet } from "@/contexts/WalletContext";
-import { Activity, AlertTriangle, Settings, Shield, Users } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Alert, AlertDescription } from '@/components/ui/Alert';
+import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Switch } from '@/components/ui/Switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
+import { useWallet } from '@/contexts/WalletContext';
+import { Activity, AlertTriangle, Settings, Shield, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface AssetInfo {
   code: string;
@@ -41,9 +41,9 @@ export default function AssetManagementDashboard() {
   const [selectedAsset, setSelectedAsset] = useState<AssetInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [clawbackForm, setClawbackForm] = useState<ClawbackForm>({
-    targetAccount: "",
-    amount: "",
-    reason: ""
+    targetAccount: '',
+    amount: '',
+    reason: '',
   });
   const [showClawbackDialog, setShowClawbackDialog] = useState(false);
   const [updatingFlags, setUpdatingFlags] = useState(false);
@@ -62,34 +62,32 @@ export default function AssetManagementDashboard() {
       // This would fetch assets issued by the connected wallet
       const mockAssets: AssetInfo[] = [
         {
-          code: "USDC",
-          issuer: address || "",
-          supply: "1000000.0000000",
+          code: 'USDC',
+          issuer: address || '',
+          supply: '1000000.0000000',
           clawbackEnabled: true,
           authRequired: true,
           authRevocable: true,
           trustlines: [
-            { accountId: "GBX...123", balance: "500.0000000", authorized: true },
-            { accountId: "GDX...456", balance: "250.0000000", authorized: true },
-            { accountId: "GAX...789", balance: "100.0000000", authorized: false }
-          ]
+            { accountId: 'GBX...123', balance: '500.0000000', authorized: true },
+            { accountId: 'GDX...456', balance: '250.0000000', authorized: true },
+            { accountId: 'GAX...789', balance: '100.0000000', authorized: false },
+          ],
         },
         {
-          code: "TOKEN",
-          issuer: address || "",
-          supply: "500000.0000000",
+          code: 'TOKEN',
+          issuer: address || '',
+          supply: '500000.0000000',
           clawbackEnabled: false,
           authRequired: false,
           authRevocable: false,
-          trustlines: [
-            { accountId: "GTX...321", balance: "1000.0000000", authorized: true }
-          ]
-        }
+          trustlines: [{ accountId: 'GTX...321', balance: '1000.0000000', authorized: true }],
+        },
       ];
       setAssets(mockAssets);
       setSelectedAsset(mockAssets[0]);
     } catch (error) {
-      console.error("Error loading assets:", error);
+      console.error('Error loading assets:', error);
     } finally {
       setLoading(false);
     }
@@ -102,20 +100,18 @@ export default function AssetManagementDashboard() {
       // This would:
       // 1. Build a setOptions operation with the new flags
       // 2. Sign and submit the transaction
-      console.log("Updating flags for asset:", assetCode, flags);
+      console.log('Updating flags for asset:', assetCode, flags);
 
       // Update local state for demo
-      setAssets(prev => prev.map(asset =>
-        asset.code === assetCode
-          ? { ...asset, ...flags }
-          : asset
-      ));
+      setAssets((prev) =>
+        prev.map((asset) => (asset.code === assetCode ? { ...asset, ...flags } : asset))
+      );
 
       if (selectedAsset?.code === assetCode) {
-        setSelectedAsset(prev => prev ? { ...prev, ...flags } : null);
+        setSelectedAsset((prev) => (prev ? { ...prev, ...flags } : null));
       }
     } catch (error) {
-      console.error("Error updating flags:", error);
+      console.error('Error updating flags:', error);
     } finally {
       setUpdatingFlags(false);
     }
@@ -132,19 +128,19 @@ export default function AssetManagementDashboard() {
       // This would:
       // 1. Build a clawback operation
       // 2. Sign and submit the transaction
-      console.log("Executing clawback:", {
+      console.log('Executing clawback:', {
         asset: selectedAsset.code,
-        ...clawbackForm
+        ...clawbackForm,
       });
 
       // Reset form and close dialog
-      setClawbackForm({ targetAccount: "", amount: "", reason: "" });
+      setClawbackForm({ targetAccount: '', amount: '', reason: '' });
       setShowClawbackDialog(false);
 
       // Reload assets to update trustlines
       await loadAssets();
     } catch (error) {
-      console.error("Error executing clawback:", error);
+      console.error('Error executing clawback:', error);
     } finally {
       setLoading(false);
     }
@@ -159,9 +155,7 @@ export default function AssetManagementDashboard() {
       <div className="container mx-auto py-8">
         <Alert>
           <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            Please connect your wallet to manage assets.
-          </AlertDescription>
+          <AlertDescription>Please connect your wallet to manage assets.</AlertDescription>
         </Alert>
       </div>
     );
@@ -190,9 +184,7 @@ export default function AssetManagementDashboard() {
               <Shield className="h-5 w-5" />
               Your Assets
             </CardTitle>
-            <CardDescription>
-              Select an asset to manage its settings
-            </CardDescription>
+            <CardDescription>Select an asset to manage its settings</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             {assets.map((asset) => (
@@ -200,17 +192,15 @@ export default function AssetManagementDashboard() {
                 key={asset.code}
                 className={`p-3 border rounded-lg cursor-pointer transition-colors ${
                   selectedAsset?.code === asset.code
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:bg-muted/50"
+                    ? 'border-primary bg-primary/5'
+                    : 'border-border hover:bg-muted/50'
                 }`}
                 onClick={() => setSelectedAsset(asset)}
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-semibold">{asset.code}</div>
-                    <div className="text-sm text-muted-foreground">
-                      Supply: {asset.supply}
-                    </div>
+                    <div className="text-sm text-muted-foreground">Supply: {asset.supply}</div>
                   </div>
                   <div className="flex gap-1">
                     {asset.clawbackEnabled && (
@@ -306,9 +296,7 @@ export default function AssetManagementDashboard() {
                     <Users className="h-5 w-5" />
                     Trustline Manager
                   </CardTitle>
-                  <CardDescription>
-                    View and manage accounts holding this asset
-                  </CardDescription>
+                  <CardDescription>View and manage accounts holding this asset</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="all" className="w-full">
@@ -320,7 +308,10 @@ export default function AssetManagementDashboard() {
 
                     <TabsContent value="all" className="space-y-3">
                       {selectedAsset.trustlines.map((trustline, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
                           <div>
                             <div className="font-mono text-sm">
                               {formatAddress(trustline.accountId)}
@@ -330,8 +321,8 @@ export default function AssetManagementDashboard() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Badge variant={trustline.authorized ? "default" : "destructive"}>
-                              {trustline.authorized ? "Authorized" : "Unauthorized"}
+                            <Badge variant={trustline.authorized ? 'default' : 'destructive'}>
+                              {trustline.authorized ? 'Authorized' : 'Unauthorized'}
                             </Badge>
                             {selectedAsset.clawbackEnabled && trustline.authorized && (
                               <Button
@@ -341,7 +332,7 @@ export default function AssetManagementDashboard() {
                                   setClawbackForm({
                                     targetAccount: trustline.accountId,
                                     amount: trustline.balance,
-                                    reason: ""
+                                    reason: '',
                                   });
                                   setShowClawbackDialog(true);
                                 }}
@@ -356,9 +347,12 @@ export default function AssetManagementDashboard() {
 
                     <TabsContent value="authorized" className="space-y-3">
                       {selectedAsset.trustlines
-                        .filter(t => t.authorized)
+                        .filter((t) => t.authorized)
                         .map((trustline, index) => (
-                          <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
                             <div>
                               <div className="font-mono text-sm">
                                 {formatAddress(trustline.accountId)}
@@ -377,7 +371,7 @@ export default function AssetManagementDashboard() {
                                     setClawbackForm({
                                       targetAccount: trustline.accountId,
                                       amount: trustline.balance,
-                                      reason: ""
+                                      reason: '',
                                     });
                                     setShowClawbackDialog(true);
                                   }}
@@ -392,9 +386,12 @@ export default function AssetManagementDashboard() {
 
                     <TabsContent value="unauthorized" className="space-y-3">
                       {selectedAsset.trustlines
-                        .filter(t => !t.authorized)
+                        .filter((t) => !t.authorized)
                         .map((trustline, index) => (
-                          <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
                             <div>
                               <div className="font-mono text-sm">
                                 {formatAddress(trustline.accountId)}
@@ -433,8 +430,8 @@ export default function AssetManagementDashboard() {
               Execute Clawback
             </DialogTitle>
             <p className="text-sm text-muted-foreground mt-2">
-              This action will permanently reclaim tokens from the specified account.
-              This action cannot be undone.
+              This action will permanently reclaim tokens from the specified account. This action
+              cannot be undone.
             </p>
           </DialogHeader>
 
@@ -444,7 +441,9 @@ export default function AssetManagementDashboard() {
               <Input
                 id="target-account"
                 value={clawbackForm.targetAccount}
-                onChange={(e) => setClawbackForm(prev => ({ ...prev, targetAccount: e.target.value }))}
+                onChange={(e) =>
+                  setClawbackForm((prev) => ({ ...prev, targetAccount: e.target.value }))
+                }
                 placeholder="G..."
                 className="font-mono"
               />
@@ -455,7 +454,7 @@ export default function AssetManagementDashboard() {
               <Input
                 id="amount"
                 value={clawbackForm.amount}
-                onChange={(e) => setClawbackForm(prev => ({ ...prev, amount: e.target.value }))}
+                onChange={(e) => setClawbackForm((prev) => ({ ...prev, amount: e.target.value }))}
                 placeholder="0.0000000"
               />
             </div>
@@ -465,7 +464,7 @@ export default function AssetManagementDashboard() {
               <Input
                 id="reason"
                 value={clawbackForm.reason}
-                onChange={(e) => setClawbackForm(prev => ({ ...prev, reason: e.target.value }))}
+                onChange={(e) => setClawbackForm((prev) => ({ ...prev, reason: e.target.value }))}
                 placeholder="Reason for clawback..."
               />
             </div>
@@ -474,7 +473,7 @@ export default function AssetManagementDashboard() {
               <Alert>
                 <AlertTriangle className="h-4 w-4" />
                 <AlertDescription>
-                  You are about to clawback {clawbackForm.amount} {selectedAsset.code} from{" "}
+                  You are about to clawback {clawbackForm.amount} {selectedAsset.code} from{' '}
                   {formatAddress(clawbackForm.targetAccount)}.
                 </AlertDescription>
               </Alert>
@@ -494,7 +493,7 @@ export default function AssetManagementDashboard() {
               onClick={executeClawback}
               disabled={loading || !clawbackForm.targetAccount || !clawbackForm.amount}
             >
-              {loading ? "Executing..." : "Execute Clawback"}
+              {loading ? 'Executing...' : 'Execute Clawback'}
             </Button>
           </div>
         </DialogContent>

@@ -16,7 +16,7 @@
   "requirePragma": false,
   "htmlWhitespaceSensitivity": "css",
   "vueIndentScriptAndStyle": false,
-  "plugins": ["prettier-plugin-tailwindcss"],
+
   "overrides": [
     {
       "files": "*.json",

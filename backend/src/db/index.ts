@@ -16,9 +16,7 @@ const workspaceModels = new Set([
   'Canvas',
 ]);
 
-const basePrisma =
-  globalForPrisma.prisma ??
-  new PrismaClient();
+const basePrisma = globalForPrisma.prisma ?? new PrismaClient();
 
 const prisma = basePrisma.$extends({
   name: 'workspace-isolation',
@@ -76,7 +74,9 @@ const prisma = basePrisma.$extends({
         if (operation === 'findUnique' || operation === 'findUniqueOrThrow') {
           const result = await query(mutableArgs);
           if (result && (result as Record<string, unknown>).workspaceId !== workspaceId) {
-            return operation === 'findUnique' ? null : query({ ...mutableArgs, where: { id: '__missing__' } });
+            return operation === 'findUnique'
+              ? null
+              : query({ ...mutableArgs, where: { id: '__missing__' } });
           }
           return result;
         }

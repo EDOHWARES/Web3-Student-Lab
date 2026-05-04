@@ -127,7 +127,9 @@ export class StellarService {
   async getAccountBalance(accountId: string): Promise<string> {
     try {
       const account = await this.server.loadAccount(accountId);
-      const balance = account.balances.find((b: Horizon.HorizonApi.BalanceLine) => b.asset_type === 'native');
+      const balance = account.balances.find(
+        (b: Horizon.HorizonApi.BalanceLine) => b.asset_type === 'native'
+      );
       return balance?.balance || '0';
     } catch (error) {
       logger.error('Error fetching account balance:', error);

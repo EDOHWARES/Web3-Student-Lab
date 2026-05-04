@@ -28,9 +28,7 @@ class CacheService {
     const client = redisClient.getClient();
 
     try {
-      const data = client
-        ? await client.get(key)
-        : (redisClient.getMemoryStore().get(key) ?? null);
+      const data = client ? await client.get(key) : (redisClient.getMemoryStore().get(key) ?? null);
       if (data) {
         this.metrics.hits++;
         return JSON.parse(data) as T;
