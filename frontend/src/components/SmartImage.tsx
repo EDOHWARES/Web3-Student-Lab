@@ -172,7 +172,7 @@ export function SmartImage({
             overflow: 'hidden',
             borderRadius: 'inherit',
             transition: 'opacity 0.4s ease',
-            opacity: status === 'loaded' ? 0 : 1,
+            opacity: (status as ImageStatus) === 'loaded' ? 0 : 1,
           }}
         >
           {/* Blurred LQIP preview */}
