@@ -5,12 +5,14 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
   size?: 'default' | 'sm' | 'lg' | 'icon';
   children: React.ReactNode;
+  asChild?: boolean;
 }
 
 export function Button({
   className,
   variant = 'default',
   size = 'default',
+  asChild = false,
   ...props
 }: ButtonProps) {
   const baseClasses =
@@ -31,6 +33,12 @@ export function Button({
     lg: 'h-11 rounded-md px-8',
     icon: 'h-10 w-10',
   };
+
+  if (asChild) {
+    return (
+      <span className={cn(baseClasses, variants[variant], sizes[size], className)} {...props} />
+    );
+  }
 
   return (
     <button className={cn(baseClasses, variants[variant], sizes[size], className)} {...props} />
